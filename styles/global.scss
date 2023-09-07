@@ -1,0 +1,1770 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import 'vars';
+@import 'breakpoints';
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body{
+  font-family: $font;
+  font-size: 1.6rem;
+  background: $color-background;
+  color: $color-text;
+}
+
+input, textarea, select { font-family:inherit; }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+li{
+  list-style-type: none;
+}
+
+a{
+  color: $color-text;
+  text-decoration: none;
+}
+
+.btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+
+  &-large{
+    padding: 1rem 2rem;
+  }
+
+  &-narrow{
+    padding: .2rem 1rem;
+  }
+
+  &-outline{
+    &.btn-colorful{
+      color: $color-primary;
+      border: 1px solid $color-primary;
+    }
+    &.btn-gray{
+      color: $color-text;
+      border: 1px solid $color-text;
+    }
+  }
+
+  &-full{
+    background: $color-primary;
+    color: #fff;
+  }
+
+  &-icon{
+    gap: .5rem;
+    font-weight: 500;
+    font-size: 1.4rem;
+  }
+
+}
+
+p.error{
+  color: red;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+h1{
+  font-weight: 500;
+  font-size: 2rem;
+  margin-bottom: 3rem;
+
+  @include mediaMin(lg){
+    margin-bottom: 6rem;
+  }
+
+}
+
+h2{
+  font-weight: 500;
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+
+  @include mediaMin(xl){
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+  }
+}
+
+
+.radio {
+  $spacing: 1.5rem;
+
+  display: block;
+  position: relative;
+  text-wrap: nowrap;
+  padding-left: 25px;
+  padding-top: $spacing;
+  cursor: pointer;
+  user-select: none;
+  margin: 0 5rem 1rem 1rem;
+
+  &:last-child{
+    padding-bottom: .5rem;
+  }
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: calc($spacing + 5px);
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+
+  &:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $color-secondary;
+  }
+}
+
+#logout{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: $color-secondary;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all .3s ease;
+  width: fit-content;
+
+  svg path{
+    transition: all .3s ease;
+    fill: $color-secondary;
+  }
+
+  &:hover{
+    color: rgb(214, 43, 43);
+    svg path{
+      fill: rgb(214, 43, 43);
+    }
+  }
+}
+
+.container{
+  max-width: 1400px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.section, .app{
+  margin-top: 4rem;
+}
+
+.centered-button .btn{
+  margin: 6rem auto 0 auto;
+}
+
+#page-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1{
+    margin-bottom: 0;
+  }
+
+  @extend h1;
+  font-weight: initial;
+  font-size: initial;
+}
+
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+
+  @include mediaMax(xl){
+    position: relative;
+  }
+
+  .logo{
+    height: 31px;
+    z-index: 9;
+  }
+
+  .nav{
+    &_toggle{
+      width: 2rem;
+      height: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+
+      &, &::before, &::after{
+        background: $color-secondary;
+        border-radius: 100px;
+      }
+
+      &::before, &::after{
+        position: absolute;
+        content: '';
+        width: 1.7rem;
+        height: 4px;
+        left: 1.5px;
+      }
+
+      &::before{
+        top: 8px;
+      }
+
+      &::after{
+        top: -8px;
+      }
+
+      @include mediaMin(xl){
+        display: none;
+      }
+
+    }
+
+    &_links{
+      flex-direction: column;
+      gap: 4rem;
+      background: #fff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      padding-top: calc(7rem + 5.5rem);
+      display: none;
+      z-index: 9;
+
+      @include mediaMin(xl){
+        all: unset;
+        display: flex;
+        gap: 4rem;
+        margin-left: -40%;
+      }
+
+      &.--active{
+        display: flex;
+      }
+
+      li{
+        text-align: center;
+      }
+      a{
+        cursor: pointer;
+        transition: all .25s;
+        transform: scale(1);
+        display: block;
+        &:hover{
+          transform: scale(1.1);
+          color: $color-secondary;
+        }
+      }
+
+    }
+
+    &_actions{
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      z-index: 9;
+
+      @include mediaMin(xl){
+        position: relative;
+      }
+
+      .search{
+
+        &-wrapper{
+          position: absolute;
+          content: '';
+          left: 0;
+          top: 6rem;
+          width: 100%;
+          height: 90vh;
+          background: #fff;
+          box-shadow: $shadow;
+          padding: 1rem 1.5rem;
+          font-size: 1.4rem;
+
+          @include mediaMin(xl){
+            left: inherit;
+            right: 6rem;
+            top: 5rem;
+            width: 60rem;
+            height: 40rem;
+          }
+
+        }
+
+        &-header{
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+          position: relative;
+
+          &::after{
+            position: absolute;
+            content: "";
+            bottom: -1rem;
+            left: 0;
+            height: 1.5px;
+            width: 100%;
+            background: $color-text-15;
+          }
+        }
+
+        &-options{
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          span{
+            font-weight: 500;
+            transition: color .25s ease;
+            cursor: pointer;
+
+            &.active{
+              color: $color-secondary;
+            }
+          }
+
+          .spacer{
+            width: 1.5px;
+            height: 1.4rem;
+            background: $color-text-15;
+          }
+
+        }
+
+        &-container{
+          overflow-y: auto;
+          height: calc(100% - 4rem);
+        }
+
+        &-elements{
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+        }
+
+        &-element{
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          position: relative;
+
+          &:not(:last-child)::after{
+            position: absolute;
+            content: "";
+            bottom: -1rem;
+            left: 0;
+            height: 1.5px;
+            width: 100%;
+            background: $color-text-15;
+          }
+
+          img{
+            width: 3.6rem;
+            height: 3.6rem;
+            object-fit: cover;
+          }
+
+          &._user{
+            img{
+              border-radius: 50%;
+            }
+          }
+
+        }
+
+      }
+
+      .profile_picture{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+
+    }
+
+  }
+
+}
+
+
+.recipe-card{
+  
+  &-group, &-group-mini, &-group-profile{
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  &-group{
+    
+    @include mediaMin(md){
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(35rem, 100%), 1fr));
+    }
+
+  }
+
+  &-group-mini{
+    
+    @include mediaMin(md){
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(29rem, 100%), 1fr));
+    }
+
+  }
+
+  &-group-profile{
+    
+    @include mediaMin(md){
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(39rem, 100%), 1fr));
+    }
+
+  }
+
+
+  background: #fff;
+  box-shadow: $shadow;
+  font-size: 1.4rem;
+
+
+  @include mediaMin(xl){
+    font-size: 1.5rem;
+  }
+
+  &-header, &-title, &-desc, &-preptime, &-footer{
+    padding: 0 1rem;
+  }
+
+  &-header, &-footer{
+    .userdata{
+      &-name{
+        font-weight: 500;
+        font-size: 1.4rem;
+
+        @include mediaMin(xl){
+          font-size: 1.5rem;
+        }
+      }
+
+      .timeline{
+        font-weight: 300;
+        font-size: 1.2rem;
+
+        @include mediaMin(xl){
+          font-size: 1.4rem;
+        }
+      }
+    }
+  }
+
+  &-header{
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .userdata{
+      display: flex;
+      flex-direction: column;
+
+      @include mediaMin(xl){
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      &-picture{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        object-fit: cover;
+
+        @include mediaMin(xl){
+          width: 3.6rem;
+          height: 3.6rem;
+        }
+      }
+
+    }
+
+  }
+
+  &-title, &-desc{
+   margin: 1rem 0; 
+  }
+
+  &-image{
+    width: 100%;
+
+    &-wrapper{
+      position: relative;
+    }
+
+    &-select{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &-footer{
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .userdata{
+      display: flex;
+      flex-direction: column;
+    }
+
+  }
+
+  &-stats{
+    display: flex;
+    gap: 1.5rem;
+
+    div{
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+  }
+
+}
+
+
+.category{
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  
+  &-group{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min($category-size-large, 100%), 1fr));
+    gap: 3rem;
+
+    @include mediaMin(md){
+      grid-template-columns: repeat(auto-fit, minmax(min($category-size-large, 100%), .1fr));
+    }
+
+  }
+
+  img{
+    width: $category-size-large;
+    height: $category-size-large;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  span{
+    text-align: center;
+  }
+
+}
+
+.filter{
+
+  &-wrapper{
+    margin-bottom: 6rem;
+  }
+
+  &-desktop{
+    display: none;
+
+
+    @include mediaMin(lg){
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &-mobile{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+
+    @include mediaMin(lg){
+      display: none;
+    }
+
+    .filter-item-wrapper:nth-of-type(2){
+      .filter-container{
+        display: none;
+      }
+    }
+
+  }
+
+  &-options{
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  &-sort{
+
+    //* <select>
+    padding: .5rem 0;
+    background: 0;
+    outline: 0;
+
+
+    &-desktop{
+      display: none;
+
+      @include mediaMin(lg){
+        display: inherit;
+      }
+    }
+
+    &-mobile{
+      left: 0;
+      width: min(100%, 45rem);
+
+      .radio{
+        &:nth-of-type(1){
+          margin-top: -1.5rem;
+        }
+
+        &-group{
+          .heading{
+            margin-left: 1rem;
+            display: block;
+          }
+        }
+      }
+
+      @include mediaMin(lg){
+        display: none;
+      }
+    }
+
+  }
+
+
+  &-item{
+
+    &-wrapper{
+      position: relative;
+    }
+
+    cursor: pointer;
+
+    &-desktop{
+      user-select: none;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+
+      @include mediaMin(lg){
+        display: flex;
+      }
+
+      svg{
+        transition: all .25s;
+        transform: rotate(-180deg);
+      }
+    }
+
+    &-mobile{
+      @include mediaMin(lg){
+        display: none;
+      }
+    }
+
+    @include mediaMin(lg){
+      &.--active{
+        .filter-item-desktop{
+          svg{
+            transform: rotate(0deg);
+          }
+        }
+      }
+    }
+
+  }
+
+  &-container{
+    position: absolute;
+    top: 120%;
+    left: 0;
+    background: #fff;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: all .3s;
+
+    @include mediaMax(xl){
+      &:is(#categories-container){
+        min-width: min(90vw, 53rem);
+      }
+    }
+
+    &.--active{
+      grid-template-rows: 1fr;
+      box-shadow: $shadow;
+    }
+
+    &-wrapper{
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .category{
+      &-group{
+        grid-template-columns: repeat(auto-fit, minmax(min(calc($category-size-small - 1rem), 100%), 1fr));
+        row-gap: 0;
+        margin: 0 1.5rem;
+        @include mediaMin(md){
+          grid-template-columns: repeat(auto-fit, minmax(min($category-size-small, 100%), .1fr));
+          max-width: 53rem;
+          margin: 0 2rem;
+        }
+      }
+
+      &:last-child {
+        span{
+          display: block;
+          margin-bottom: 1.5rem;
+        }
+      }
+    
+      img{
+        margin-top: 1.5rem;
+        width: $category-size-small;
+        height: $category-size-small;
+
+        @include mediaMax(xl){
+          width: calc($category-size-small - 1rem);
+          height: calc($category-size-small - 1rem);
+        }
+      }
+
+      span{
+        font-size: 1.2rem;
+        @include mediaMin(xl){
+          font-size: 1.3rem;
+        }
+      }
+    }
+
+    .radio-group{
+      min-height: 0;
+    }
+
+    .heading, .filter-type{
+      padding-bottom: 1.5rem;
+      margin: 0 2rem;
+
+      @include mediaMin(lg){
+        display: none;
+      }
+      
+    }
+
+    .heading{
+      margin-top: 2rem;
+    }
+
+    .preptime-group{
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin: 0 2rem 2rem 2rem;
+
+      @include mediaMin(lg){
+        display: none;
+      }
+    }
+
+  }
+
+}
+
+
+.user-card{
+
+  &-group{
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+
+    @include mediaMin(md){
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(39rem, 100%), 1fr));
+    }
+
+  }
+
+  background: #fff;
+  box-shadow: $shadow;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .userdata{
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+      justify-content: center;
+
+      img{
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      span{
+        font-weight: 500;
+        font-size: 1.3rem;
+
+        @include mediaMin(xl){
+          font-size: 1.5rem;
+        }
+      }
+
+    }
+
+  }
+
+  &-data{
+    $gap: 2rem;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $gap;
+
+    @include mediaMin(sm){
+      max-width: fit-content;
+    }
+
+    div{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      position: relative;
+
+      &:not(:last-child)::after{
+        content: '';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 75%;
+        background: $color-text-15;
+      }
+
+      &:not(:first-child)::after{
+        right: -(calc($gap - 1rem));
+      }
+
+      &:first-child::after{
+        right: -(calc($gap - 0.5rem));
+      }
+
+      span{
+        font-size: 1.1rem;
+
+        @include mediaMin(sl){
+          font-size: 1.5rem;
+        }
+
+        &:first-child{
+          font-weight: 500;
+        }
+        &:last-child{
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+}
+
+
+.profile{
+
+  $profile-image-small: 12.5rem;
+  $profile-image-large: 18.5rem;
+
+  &-header{
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: $profile-image-small auto;
+    align-items: center;
+
+    @include mediaMin(md){
+      grid-template-columns: $profile-image-large auto;
+    }
+
+    .user-card-data {
+      @include mediaMax(sm){
+        &:first-child{
+          display: none;
+        }
+      }
+
+      &:last-child{
+        grid-column: 1 / span 2;
+        @include mediaMin(sm){
+          display: none;
+        }
+      }
+    }
+  }
+
+  &-ctas, &-data{
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  &-data{
+    flex-direction: column;
+  }
+
+  &-ctas{
+    @include mediaMax(xl){
+      flex-direction: column;
+
+      .btn{
+        min-width: 17.803rem;
+      }
+    }
+  }
+
+  &-picture{
+    width: $profile-image-small;
+    height: $profile-image-small;
+    object-fit: cover;
+    border-radius: 50%;
+
+    @include mediaMin(md){
+      width: $profile-image-large;
+      height: $profile-image-large;
+    }
+  }
+
+  &-content{
+    display: flex;
+    gap: 4rem;
+    flex-direction: column;
+    margin-top: 4rem;
+    
+    @include mediaMin(xl){
+      flex-direction: row;
+      gap: 13rem;
+      justify-content: space-between;
+      margin-top: 6rem;
+    }
+
+    &-body{
+      flex: 1;
+      @include mediaMax(xl){
+        order: 2;
+      }
+
+      &:is(.data-group){
+        display: flex;
+        flex-direction: column;
+        gap: 10rem;
+      }
+
+    }
+    
+    &-navigation{
+      background: $color-foreground;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      height: fit-content;
+      flex: 0.3;
+      max-width: 100%;
+
+      @include mediaMin(xl){
+        max-width: 14rem;
+      }
+
+      @include mediaMin(xxl){
+        max-width: 29rem;
+      }
+
+      &-item{
+        display: flex;
+        width: fit-content;
+        cursor: pointer;
+        gap: 1.5rem;
+        color: $color-text-75;
+
+
+        svg {
+          width: 25px;
+          path{
+            fill: $color-text-75;
+          }
+        }
+
+        &.--active{
+          color: $color-primary;
+          font-weight: 500;
+          svg path{
+            fill: $color-primary;
+          }
+        }
+
+      }
+    }
+
+  }
+
+
+  &-input{
+      
+    &-group{
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+
+      @include mediaMin(xl){
+        display: grid;
+        grid-template: repeat(2, 1fr) / repeat(2, 29rem);
+      }
+    }
+
+    input {
+      background: 0;
+      border: 0;
+      outline: none;
+      font-size: 1.6rem;
+      transition: padding 0.3s 0.2s ease;
+
+      &:focus{
+        color: $color-secondary;
+      }
+    
+      &:focus + .line {
+        &:after {
+          transform: scaleX(1);
+        }
+      }
+    }
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: max(29rem, 100%);
+  
+    .line {
+      width: 100%;
+      height: 2px;
+      position: absolute;
+      bottom: -8px;
+      background: $color-text-75;
+  
+      &:after {
+        content: " ";
+        position: absolute;
+        float: right;
+        width: 100%;
+        height: 2px;
+        
+        transform: scalex(0);
+        transition: transform 0.3s ease;
+        
+        background: $color-primary;;
+      }
+    }
+    
+    
+
+  }
+
+
+}
+
+
+.review-card{
+
+  &-group{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(29rem, 100%), 1fr));
+    gap: 2.5rem;
+
+    @include mediaMin(xl){
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+  }
+
+
+  &-content{
+
+    &-header{
+      
+      @include mediaMin(xl){
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &-data{
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        @include mediaMin(xl){
+          gap: 1rem;
+        }
+      }
+      
+    }
+
+    &-text{
+      margin: 1.5rem 0 2rem 0;
+      font-size: 1.4rem;
+
+      @include mediaMin(xl){
+        margin: 2rem 0 0 0;
+      }
+    }
+
+  }
+
+  &-title{
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  &-rating{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.4rem;
+
+    span:first-child{
+      font-weight: 300;;
+    }
+
+    div{
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+  }
+
+  &-actions{
+    display: flex;
+    gap: 1rem;
+
+    @include mediaMax(xl){
+      &:is(.review-card-content-header-actions){
+        display: none;
+      }
+    }
+
+    @include mediaMin(xl){
+      &:not(:is(.review-card-content-header-actions)){
+        display: none;
+      }
+    }
+
+  }
+
+
+  &-user{
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 81rem;
+
+    @include mediaMin(xl){
+      flex-direction: row;
+      gap: 2rem;
+      align-items: center;
+
+      & + &{
+        &::before{
+          position: absolute;
+          content: '';
+          width: 100%;
+          height: 1px;
+          background: $color-text-15;
+          left: 0;
+          top: -2rem;
+        }
+      }
+
+    }
+
+    &-image{
+      width: 100%;
+      height: 180px;
+    }
+
+
+
+  }
+
+}
+
+
+.input-dropdown{
+  position: relative;
+  padding: 2rem 1rem;
+  background: #fff;
+  user-select: none;
+
+  &-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    max-height: 2.5rem;
+  }
+
+  svg{
+    transition: transform .2s ease;
+  }
+
+  &.--active{
+    svg{
+      transform: rotate(-180deg);
+    }
+  }
+
+  &-content{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    @include mediaMin(xl){
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+  }
+
+  .category{
+    flex-direction: row;
+    gap: 1rem;
+
+    img{
+      width: 4.2rem;
+      height: 4.2rem;
+    }
+
+    span{
+      font-size: 1.4rem;
+    }
+
+  }
+
+}
+
+.dynamic-prompt{
+
+  display: flex;
+  flex-direction: column;
+  font-size: 1.4rem;
+
+  input{
+    width: 100%;
+  }
+
+  &-material{
+    span{
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+  }
+
+  &-ingredient{
+
+    margin-bottom: 2rem;
+
+    &-wrapper{
+      margin: 1.5rem 0 2rem 0;
+      width: 95%;
+      float: right;
+    }
+
+    .quantity{
+      max-width: 8.5rem;
+    }
+
+    .dynamic-prompt-input{
+      margin-bottom: 1.5rem;
+    }
+
+  }
+
+  &-input{
+    display: grid;
+    grid-template-columns: min(88%, 46rem) auto;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+}
+
+.dynamic-instruction{
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  textarea{
+    border: 0;
+    outline: 0;
+    font-size: 1.4rem;
+    width: 100%;
+    background: inherit;
+    height: auto;
+    resize: none;
+  }
+
+  &-input{
+    display: flex;
+    gap: 1.5rem;
+    
+    .btn{
+      margin-top: .1rem;
+    }
+
+    &-content{
+      display: flex;
+      gap: 1rem;
+      flex: 1;
+    }
+  }
+
+  &-number{
+    background: $color-primary;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    min-width: 2.5rem;
+    height: 2.5rem;
+  }
+
+}
+
+
+.form-recipe{
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-bottom: 8rem;
+
+  @include mediaMin(xl){
+    margin-bottom: 15rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 17rem;
+
+    &-container:nth-of-type(3){
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+
+  h2{
+    margin-bottom: 0;
+  }
+
+  input{
+    border: 0;
+    outline: 0;
+    padding: 1rem;
+    font-size: 1.4rem;
+  }
+
+  input, textarea, &-input{
+    max-width: 46rem;
+  }
+
+  textarea{
+    height: auto;
+    resize: none;
+    border: 0;
+    outline: 0;
+  }
+
+  &-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+  }
+
+  &-input{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    &-wrapper{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+  }
+
+
+
+}
+
+
+.recipe-post{
+
+  &-header, &-comments{
+    .userdata{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      
+
+      &-picture{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      &-contact{
+        display: flex;
+        flex-direction: column;
+      }
+
+      &-name{
+        font-weight: 500;
+        font-size: 1.4rem;
+      }
+
+      &-timeline{
+        font-weight: 300;
+        font-size: 1.2rem;
+      }
+
+    }
+  }
+
+  &-header{
+    position: relative;
+    margin: 1.5rem 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+
+    &::after{
+      position: absolute;
+      content: '';
+      width: 100%;
+      height: 1.5px;
+      background: $color-text-15;
+      bottom: -2rem;
+      left: 0;
+    }
+
+    @include mediaMin(lg){
+      display: grid;
+      grid-template: repeat(2, min-content) / repeat(3, min-content);
+      gap: 3rem;
+
+      .userdata{
+        min-width: max-content;
+        &-contact{
+          flex-direction: row;
+          align-items: center;
+          gap: 3rem;
+        }
+      }
+
+    }
+
+  }
+
+  &-stats{
+    display: flex;
+    gap: 3rem;
+    margin: 1.5rem 0 2rem 0;
+
+    @include mediaMin(lg){
+      margin: initial;
+      grid-column: 3;
+    }
+
+    div{
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+  }
+
+  &-preptime{
+    font-weight: 500;
+  }
+
+  &-description{
+    margin: 4rem 0 2rem 0;
+
+    @include mediaMin(xl){
+      max-width: 70%;
+    }
+  }
+
+
+  &-image{
+    width: 100%;
+  }
+
+  &-wrapper{
+    margin: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    @include mediaMin(xl){
+      margin: 5rem 0;
+      flex-direction: row;
+      gap: 10rem;
+    }
+  }
+
+  &-column{
+    @include mediaMin(xl){
+      flex: 1;
+    }
+  }
+
+  &-ingredient + &-ingredient{
+    margin-top: 2rem;
+
+    @include mediaMin(xl){
+      margin-top: 3rem;
+    }
+  }
+
+  &-comments{
+
+    h2{
+      margin-bottom: 4rem;
+      position: relative;
+
+      &::after{
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 1.5px;
+        background: $color-text-15;
+        left: 0;
+        bottom: -2rem;
+      }
+    }
+
+    &-container{
+      .title{
+        @extend h1;
+      }
+
+      .cta{
+        margin:2rem 0;
+      }
+
+      .separator{
+        width: 100%;
+        height: 7px;
+        background: $color-primary;
+        margin: 2rem 0 3rem 0;
+      }
+    }
+
+  }
+
+  
+  &-comment{
+
+    position: relative;
+
+    & + &{
+      margin-top: 3rem;
+      &::before{
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 1.5px;
+        background: $color-text-15;
+        left: 0;
+        top: -1.5rem;
+      }
+    }
+
+
+    &-replies{
+      margin: 3rem 0 0 calc(3.2rem + 1rem);
+
+      .recipe-post-comment{
+        &:nth-of-type(1){
+          &::before{
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 1.5px;
+            background: $color-text-15;
+            left: 0;
+            top: -1.5rem;
+          }
+        }
+      }
+    }
+
+    p, &-actions{
+      margin: 1rem 0 1.5rem calc(3.2rem + 1rem);
+    }
+
+    p{
+      @include mediaMin(xl){
+        max-width: 70%;
+      }
+    }
+
+    &-reply{
+      margin: 1.5rem 0 0 calc(3.2rem + 1rem);
+      background: #fff;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      
+      textarea{
+        border: 0;
+        outline: 0;
+        font-size: 1.4rem;
+        width: 100%;
+        background: inherit;
+        height: auto;
+        resize: none;
+      }
+
+      &-actions{
+        display: flex;
+        gap: 1.5rem;
+      }
+
+    }
+
+    p{
+      font-size: 1.4rem;
+    }
+
+    &-actions, &-action{
+      display: flex;
+      align-items: center;
+    }
+
+    &-actions{
+      gap: 2rem;
+    }
+
+    &-action{
+      gap: 1rem;
+
+      span{
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+
+      svg{
+        width: 1.6rem;
+        path{
+          stroke: $color-text-75;
+        }
+      }
+    }
+
+  }
+
+}

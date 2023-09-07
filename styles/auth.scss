@@ -1,0 +1,185 @@
+@import 'vars';
+@import 'breakpoints';
+
+.auth{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  margin-top: 0;
+
+  @include mediaMin(xl){
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+.box{
+  padding: 2rem 3.5rem;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  @include mediaMin(xl){
+    padding: 6rem 5rem;
+  }
+
+  svg{
+
+    @include mediaMin(xl){
+      width: 37rem;
+      height: 28rem;
+    }
+
+    @include mediaMin(xxl){
+      width: 50rem;
+      height: 37rem;
+    }
+  }
+}
+
+.column{
+  position: relative;
+  width: 100%;
+  
+
+  &:nth-of-type(1){
+    img{
+      width: 100%;
+      min-height: 25rem;
+      vertical-align: bottom;
+
+      @include mediaMin(xl){
+        height: 100vh;
+        object-fit: cover;
+      }
+
+    }
+  }
+
+  &:nth-of-type(2){
+    padding: 3rem 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+
+    @include mediaMin(lg){
+      padding: 3rem 30%;
+    }
+
+    @include mediaMin(xl){
+      padding: 0 10rem;
+      max-width: 70rem;
+      margin: 0 auto;
+      gap: 5rem;
+    }
+
+    svg{
+      display: block;
+      margin: 0 auto;
+      width: 12rem;
+      height: 4rem;
+
+      @include mediaMin(xl){
+        width: 20rem;
+        height: 7rem;
+      }
+    }
+  }
+
+}
+
+.h1{
+  display: flex;
+  gap: .7rem;
+  align-items: center;
+
+  @include mediaMin(xl){
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  h1{
+    margin-bottom: 0;
+    font-weight: 600;
+
+    @include mediaMin(xl){
+      font-size: 2.4rem;
+    }
+  }
+
+  img{
+    @include mediaMin(xl){
+      height: 2.6rem;
+    }
+  }
+}
+
+.actions{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 0 auto;
+
+  @include mediaMin(xxl){
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 4rem;
+    width: 100%;
+  }
+
+  .btn-auth{
+    display: grid;
+    grid-template-columns: 25px auto;
+    align-items: center;
+    gap: 1.5rem;
+    background: #fff;
+    padding: .8rem 1rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    
+    @include mediaMin(xl){
+      font-size: 1.6rem;
+      min-width: 22rem;
+    }
+
+    @include mediaMin(xxl){
+      flex: 1;
+    }
+
+  }
+
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+input{
+  border: 0;
+  outline: 0;
+  padding: 1rem;
+}
+
+.input{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+input, .input{
+  font-size: 1.4rem;
+
+  @include mediaMin(xl){
+    font-size: 1.6rem;
+  }
+}
+
+.link{
+  color: $color-text-75;
+}
