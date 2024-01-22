@@ -6,7 +6,7 @@ import Dropdown from "@components/Dropdown"
 import DynamicInstructions from "@components/DynamicInstructions"
 import DynamicPrompt from "@components/DynamicPrompt"
 import RecipeCard from "@components/RecipeCard"
-import { useRef, useEffect, useState } from "react"
+import { useRef, useState } from "react"
 import { useForm, SubmitHandler, FormProvider, Controller, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -44,7 +44,7 @@ const NewRecipe = () => {
 
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log("submit started")
+
     const blob = data.photo
 
     const hasImageChanged = isBase64Image(blob)
@@ -89,7 +89,6 @@ const NewRecipe = () => {
 
           <h2>Basic informations</h2>
 
-
           <div className="form-recipe-input">
             <label htmlFor="title">Recipe title</label>
             <input type="text" id="title" {...methods.register('title')} placeholder="Enter recipe title" />
@@ -113,7 +112,7 @@ const NewRecipe = () => {
                 />
               )}
             />
-            {/* <textarea id="description" {...methods.register('description')} placeholder="Enter recipe description" onChange={handleTextareaChange} ref={textareaRef} /> */}
+           
             {methods.formState.errors.description && <p className="error">{methods.formState.errors.description.message}</p>}
           </div>
 
@@ -128,7 +127,7 @@ const NewRecipe = () => {
               <Button onClick={() => methods.setValue('prep_time', '20-30')} gap="narrow" type="outline" color="gray" text="20-30 MIN" value="20-30" />
               <Button onClick={() => methods.setValue('prep_time', '30-45')} gap="narrow" type="outline" color="gray" text="30-45 MIN" value="30-45" />
               <Button onClick={() => methods.setValue('prep_time', '45-60')} gap="narrow" type="outline" color="gray" text="45-60 MIN" value="45-60" />
-              <Button onClick={() => methods.setValue('prep_time', '50-100')} gap="narrow" type="outline" color="gray" text="60-100 MIN" value="60-100" />
+              <Button onClick={() => methods.setValue('prep_time', '60-100')} gap="narrow" type="outline" color="gray" text="60-100 MIN" value="60-100" />
 
             </div>
 

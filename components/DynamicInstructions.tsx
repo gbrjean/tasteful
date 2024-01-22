@@ -5,14 +5,17 @@ import { AddCircleIcon } from "@public/assets/icons/AddCircleIcon";
 import { useFormContext, Controller, useFieldArray } from "react-hook-form";
 
 
-interface IngredientProps {
+interface InstructionProps {
   instructionIndex: number;
   onDeleteInstruction: (instructionIndex: number) => void;
 }
 
+interface props {
+  defaultValues?: [];
+}
 
 
-const Instruction = ({ instructionIndex, onDeleteInstruction } : IngredientProps ) => {
+const Instruction = ({ instructionIndex, onDeleteInstruction } : InstructionProps ) => {
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
@@ -35,7 +38,6 @@ const Instruction = ({ instructionIndex, onDeleteInstruction } : IngredientProps
       <Button onClick={handleDelete} type='icon' text={<RemoveCircleIcon />} />
       <div className="dynamic-instruction-input-content">
         <div className="dynamic-instruction-number">{(instructionIndex + 1)}</div>
-        {/* <textarea placeholder="Write here..." onChange={handleTextareaChange} ref={textareaRef} /> */}
 
         <Controller
           name={`instructions[${instructionIndex}].instruction`}
@@ -60,13 +62,8 @@ const Instruction = ({ instructionIndex, onDeleteInstruction } : IngredientProps
 };
 
 
-const DynamicInstructions = () => {
+const DynamicInstructions = ({defaultValues}: props) => {
 
-  // const [instructions, setInstructions] = useState<{}[]>(
-  //   [
-  //     {}
-  //   ]
-  // );
 
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -76,25 +73,23 @@ const DynamicInstructions = () => {
 
   const handleAddInstruction = () => {
     append({ instruction: "" });
-  };
-
-  useEffect(() => {
-    handleAddInstruction()
-  }, [])
-  
+  };  
 
   const handleDeleteInstruction = (instructionIndex: number) => {
     remove(instructionIndex);
   };
 
-  // const handleAddInstruction = () => {
-  //   setInstructions([...instructions, {}]);
-  // };
 
-  // const handleDeleteInstruction = (instructionIndex: number) => {
-  //   const newInstructions = instructions.filter((_, index) => index !== instructionIndex);
-  //   setInstructions(newInstructions);
-  // };
+  useEffect(() => {
+    if (defaultValues) {
+      remove(0);
+      defaultValues.forEach((instruction: any) => {
+        append({ instruction: instruction.instruction });
+      });
+    } else {
+      handleAddInstruction();
+    }
+  }, [defaultValues]);
 
 
   return (

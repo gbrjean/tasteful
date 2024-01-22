@@ -1,36 +1,35 @@
+"use client"
+
 import Category from "@components/Category"
+import { categories } from "@constants/categories"
+import { useRouter } from "next/navigation"
 
 
 const CategoriesPage = () => {
+
+  const router = useRouter()
+
+  const gotoDiscover = (category: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if(!category) return;
+    searchParams.set('categories', category)
+    const newPathname = `/discover?${searchParams.toString()}&keep=true`
+    router.push(newPathname)
+  }
+
+
   return (
     <>
     <h1>Categories</h1>
 
     <div className="category-group">
 
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-      <Category image="/assets/images/post.jpg" name="Seafood" />
-
+      { categories.map((category, key) => (
+          <Category key={key} image={category.image} name={category.name} 
+            onClick={() => gotoDiscover(category.name)}
+          />
+      ))}
       
-
     </div>
 
 

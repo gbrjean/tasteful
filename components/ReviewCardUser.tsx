@@ -1,34 +1,66 @@
-import { ReviewsIcon } from "@public/assets/icons/ReviewsIcon"
+import { Star } from "@public/assets/icons/Star";
 import { Button } from "./Button"
+import Link from "next/link"
+import { removeCommentFromRecipe } from "@lib/actions/comment.actions"
+import { usePathname, useRouter } from "next/navigation"
+
+
+type CardDetails = {
+  id: string;
+  title: string;
+  slug: string;
+  photo: string;
+  comments: {
+    comment: string;
+    stars: string;
+  }
+}
+
 
 type props = {
   hasActions?: boolean;
+  CardDetails?: CardDetails;
+  session?: string
 }
 
-const ReviewCardUser = ({hasActions} : props) => {
+const ReviewCardUser = ({hasActions, CardDetails, session} : props) => {
+
+  const router = useRouter()
+  const pathname = usePathname()
 
   const handleEdit = () => {
-
+    if(session && CardDetails?.slug){
+      router.push(`recipe/${CardDetails.slug}#user-review`)
+    }
   }
 
-  const handleDelete = () => {
-
+  const handleDelete = async () => {
+    try {
+      if(session && CardDetails?.id){
+        await removeCommentFromRecipe(CardDetails.id, session, pathname)
+      }
+    } catch (error: any) {
+      console.log(`Could not delete the comment: ${error.message}`)
+    }
   }
 
   return (
     <div className="review-card-user">
-      <img className="review-card-user-image" src="/assets/images/post.jpg" alt="" />
+      <Link href={`/recipe/${CardDetails?.slug}`}>
+        <img className="review-card-user-image" src={CardDetails?.photo} alt="" />
+      </Link>
+      
       <div className="review-card-content">
 
         <div className="review-card-content-header">
           <div className="review-card-content-header-data">
 
-            <div className="review-card-title">Pizza de casa</div>
+            <div className="review-card-title">{CardDetails?.title}</div>
             <div className="review-card-rating">
               <span>Your rating:</span>
               <div>
-                <ReviewsIcon />
-                <span>4.8</span>
+                <Star type="half" />
+                <span>{CardDetails?.comments.stars}</span>
               </div>
             </div>
 
@@ -43,9 +75,7 @@ const ReviewCardUser = ({hasActions} : props) => {
         
         </div>
 
-        <p className="review-card-content-text">
-        Lorem ipsum dolor sit amet consectetur. Viverra in morbi donec sed nunc cursus eget enim mattis. Neque accumsan odio senectus mauris malesuada augue faucibus amet sed. Adipiscing ornare velit vel blandit donec eget habitasse.
-        </p>
+        <p className="review-card-content-text">{CardDetails?.comments.comment}</p>
 
         { hasActions && (
           <div className="review-card-actions">

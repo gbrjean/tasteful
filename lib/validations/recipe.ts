@@ -23,3 +23,14 @@ export const RecipeValidation = z.object({
   prep_time: z.string().min(1, { message: "Select a preparation time" }),
   category: z.string().min(1, { message: "Select a category" }),
 });
+
+export const CommentValidation = z.object({
+  rating: z.string().min(1, {message: "Select a rating"}).max(5),
+  comment: z.string().nonempty({ message: "Write a comment" })
+            .min(10, { message: "Write at least 10 characters" }),
+});
+
+export const ReplyValidation = z.object({
+  comment: z.string().nonempty({ message: "Write a comment" })
+            .min(10, { message: "Write at least 10 characters" }),
+});

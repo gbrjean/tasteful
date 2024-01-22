@@ -36,7 +36,7 @@ const LoginPage = () => {
   
 
     if (res?.ok) {
-      router.push('/profile');
+      router.push('/');
     } else if (res?.error) {
       setError(res.error)
     }
@@ -63,12 +63,12 @@ const LoginPage = () => {
         </div>
 
         <div className="actions">
-          <div className="btn-auth" onClick={() => signIn('google')}>
+          <div className="btn-auth" onClick={() => signIn("google", {callbackUrl: "/"})}>
             <img src="/assets/icons/Google.svg" alt="" />
             <span>Login with Google</span>
           </div>
 
-          <div className="btn-auth" onClick={() => signIn('facebook')}>
+          <div className="btn-auth" onClick={() => signIn("facebook", {callbackUrl: "/"})}>
             <img src="/assets/icons/Facebook.svg" alt="" />
             <span>Login with Facebook</span>
           </div>

@@ -6,13 +6,16 @@ const commentSchema = new Schema({
     ref: 'User', 
     required: true 
   },
-  comment: String,
+  comment: { type: String, required: true },
+  stars: String,
   parent_id: { type: String },
   children: [
     { type: Schema.Types.ObjectId, 
       ref: 'Comment' 
     }
   ],
+  children_no: { type: Number, default: 0 },
+  created_at: { type: Date, default: Date.now },
 });
 
 

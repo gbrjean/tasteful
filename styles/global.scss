@@ -35,6 +35,21 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+input[type=submit]:not(.btn-full) {
+  outline: inherit;
+  border: inherit;
+  appearance: none;
+  background: none;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+  vertical-align: baseline;
+}
+
 li{
   list-style-type: none;
 }
@@ -42,6 +57,9 @@ li{
 a{
   color: $color-text;
   text-decoration: none;
+  &:not(.recipe-card){
+    display: inline-flex;
+  }
 }
 
 .btn{
@@ -62,18 +80,21 @@ a{
 
   &-outline{
     &.btn-colorful{
-      color: $color-primary;
-      border: 1px solid $color-primary;
+      color: $color-primary !important;
+      border: 1px solid $color-primary !important;
     }
     &.btn-gray{
-      color: $color-text;
-      border: 1px solid $color-text;
+      color: $color-text !important;
+      border: 1px solid $color-text !important;
     }
   }
 
   &-full{
     background: $color-primary;
     color: #fff;
+    outline: 0;
+    border: 0;
+    font-size: inherit;
   }
 
   &-icon{
@@ -154,6 +175,52 @@ h2{
   }
 }
 
+#star-rating{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  span{
+    font-weight: 400;
+  }
+
+  &_read-only{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    span{
+      font-weight: 400;
+    }
+    .stars{
+      display: inherit;
+      gap: 0;
+    }
+  }
+
+  .stars {
+    display: inherit;
+
+    &:hover svg {
+      fill: $color-primary;
+    }
+    
+    svg {
+      width: 22px;
+      height: 22px;
+      fill: $color-background;
+      cursor: pointer;
+      transition: fill 0.2s ease;
+
+      &:hover ~ svg {
+        fill: $color-background;
+      }
+
+    }
+  
+  }
+  
+
+}
+
 #logout{
   display: flex;
   align-items: center;
@@ -163,6 +230,7 @@ h2{
   font-weight: 500;
   transition: all .3s ease;
   width: fit-content;
+  margin-top: 8rem;
 
   svg path{
     transition: all .3s ease;
@@ -185,6 +253,7 @@ h2{
 
 .section, .app{
   margin-top: 4rem;
+  margin-bottom: 4rem;
 }
 
 .centered-button .btn{
@@ -195,6 +264,7 @@ h2{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 
   h1{
     margin-bottom: 0;
@@ -219,6 +289,9 @@ header{
   .logo{
     height: 31px;
     z-index: 9;
+    @include mediaMin(xl){
+      flex: 0.15;
+    }
   }
 
   .nav{
@@ -275,7 +348,7 @@ header{
         all: unset;
         display: flex;
         gap: 4rem;
-        margin-left: -40%;
+        flex: 1;
       }
 
       &.--active{
@@ -310,6 +383,10 @@ header{
 
       .search{
 
+        &-icon{
+          cursor: pointer;
+        }
+
         &-wrapper{
           position: absolute;
           content: '';
@@ -334,19 +411,24 @@ header{
 
         &-header{
           display: flex;
-          align-items: center;
-          gap: 1.5rem;
-          margin-bottom: 2rem;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 3rem;
           position: relative;
 
           &::after{
             position: absolute;
             content: "";
-            bottom: -1rem;
+            bottom: -1.5rem;
             left: 0;
             height: 1.5px;
             width: 100%;
             background: $color-text-15;
+          }
+
+          input{
+            padding: 0.5rem 1rem;
+            outline: none;
           }
         }
 
@@ -361,7 +443,7 @@ header{
             cursor: pointer;
 
             &.active{
-              color: $color-secondary;
+              color: $color-primary;
             }
           }
 
@@ -375,7 +457,7 @@ header{
 
         &-container{
           overflow-y: auto;
-          height: calc(100% - 4rem);
+          height: calc(100% - 10rem);
         }
 
         &-elements{
@@ -432,6 +514,7 @@ header{
 
 
 .recipe-card{
+
   
   &-group, &-group-mini, &-group-profile{
     display: flex;
@@ -470,6 +553,7 @@ header{
   background: #fff;
   box-shadow: $shadow;
   font-size: 1.4rem;
+  max-width: 60rem;
 
 
   @include mediaMin(xl){
@@ -538,8 +622,19 @@ header{
    margin: 1rem 0; 
   }
 
+  &-desc{
+    @include mediaMin(md){
+      min-height: 4.6rem;
+    }
+  }
+
+  a:has(.recipe-card-image){
+    width: 100%;
+  }
+
   &-image{
     width: 100%;
+    height: 28rem;
 
     &-wrapper{
       position: relative;
@@ -568,6 +663,12 @@ header{
       flex-direction: column;
     }
 
+    &-actions{
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
   }
 
   &-stats{
@@ -587,12 +688,35 @@ header{
 
 .category{
 
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
   cursor: pointer;
   user-select: none;
+
+  &::before{
+    position: absolute;
+    content: '';
+    width: 120%;
+    height: 110%;
+    top: -5%;
+    left: -10%;
+    transition: all .3s ease;
+  }
+
+  &.active{
+    &::before{
+      background: rgba(10, 130, 8, 0.20);
+    }
+  }
+
+  &:hover{
+    &::before{
+      background: rgba($color: $color-secondary, $alpha: 0.2);
+    }
+  }
   
   &-group{
     display: grid;
@@ -622,6 +746,19 @@ header{
 
   &-wrapper{
     margin-bottom: 6rem;
+
+    &_sort-filter{
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &_pocket-filter{
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
   }
 
   &-desktop{
@@ -693,7 +830,7 @@ header{
       }
 
       @include mediaMin(lg){
-        display: none;
+        display: none !important;
       }
     }
 
@@ -788,6 +925,13 @@ header{
           margin-bottom: 1.5rem;
         }
       }
+
+      &::before{
+        width: 140%;
+        height: 100%;
+        top: 5%;
+        left: -20%;
+      }
     
       img{
         margin-top: 1.5rem;
@@ -841,6 +985,129 @@ header{
 
 }
 
+#pagination{
+  margin-top: 6rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  p{
+    font-weight: 600;
+  }
+}
+
+
+#create-pocket{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  @include mediaMin(md){
+    left: inherit;
+    right: 0;
+    max-width: 33rem;
+  }
+
+  input{
+    flex: 1;
+    outline: 0;
+    padding: 0.2rem 1rem;
+    font-size: 1.4rem;
+  }
+
+  &-wrapper{
+    z-index: 3;
+    position: absolute;
+    top: 130%;
+    left: 0;
+    width: 100%;
+    height: 70vh;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    box-shadow: $shadow;
+
+    @include mediaMin(md){
+      top: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 62rem;
+      height: 45rem;
+      padding: 1.5rem 2rem;
+    }
+  }
+
+  &-content{
+    border-top: 1.5px solid $color-text-15;
+    margin-top: 1.5rem;
+    max-height: 100%;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  
+  &-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+
+    span{
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+  }
+
+
+  &-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    & + &{
+      &::before{
+        position: absolute;
+        content: '';
+        top: -1.5rem;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: $color-text-15;
+      }
+    }
+
+    span{
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+
+    input{
+      outline: 0;
+      padding: 0.2rem 1rem;
+      font-size: 1.4rem;
+      width: 20rem;
+      @include mediaMin(md){
+        width: 25rem;
+      }
+    }
+
+    &-edit{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    &-actions{
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+  }
+
+}
+
 
 .user-card{
 
@@ -850,8 +1117,8 @@ header{
     gap: 2.5rem;
 
     @include mediaMin(md){
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(39rem, 100%), 1fr));
+      flex-wrap: wrap;
+      flex-direction: row;
     }
 
   }
@@ -862,6 +1129,7 @@ header{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 44rem;
 
   &-header{
     display: flex;
@@ -1170,6 +1438,7 @@ header{
 
 
   &-content{
+    flex: 1;
 
     &-header{
       
@@ -1253,7 +1522,7 @@ header{
     @include mediaMin(xl){
       flex-direction: row;
       gap: 2rem;
-      align-items: center;
+      align-items: flex-start;
 
       & + &{
         &::before{
@@ -1272,6 +1541,10 @@ header{
     &-image{
       width: 100%;
       height: 180px;
+
+      @include mediaMin(xl){
+        width: 29rem;
+      }
     }
 
 
@@ -1326,6 +1599,13 @@ header{
   .category{
     flex-direction: row;
     gap: 1rem;
+
+    &::before{
+      width: 100%;
+      height: 140%;
+      left: -10px;
+      top: auto;
+    }
 
     img{
       width: 4.2rem;
@@ -1498,8 +1778,83 @@ header{
 
 }
 
+.pocket-context{
+
+  &-wrapper{
+    z-index: 2;
+    padding: .5rem;
+    background: #fff;
+    box-shadow: $shadow;
+    position: absolute;
+    top: 140%;
+    left: 0;
+    width: 100%;
+    
+    @include mediaMin(md){
+      width: 25rem;
+      top: 0;
+      left: 140%;
+    }
+
+    span{
+      font-size: 1.3rem;
+      font-weight: 300;
+      @include mediaMin(md){
+        font-size: 1.4rem;
+      }
+    }
+  }
+
+  &-content{
+    margin-top: .5rem;
+    border-top: 1px solid $color-text-15;
+    max-height: 15rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: .5rem;
+
+    @include mediaMin(md){
+      max-height: 17rem;
+    }
+
+    p{
+      position: relative;
+      font-size: 1.4rem;
+      cursor: pointer;
+      user-select: none;
+      @include mediaMin(md){
+        font-size: 1.5rem;
+      }
+    }
+    p+p{
+      &::before{
+        position: absolute;
+        content: '';
+        height: 1px;
+        width: 100%;
+        background: $color-text-15;
+        left: 0;
+        top: -5px;
+      }
+    }
+  }
+
+}
+
 
 .recipe-post{
+
+  h1{
+    margin: 0;
+  }
+
+  &-category{
+    display: block;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
 
   &-header, &-comments{
     .userdata{
@@ -1549,9 +1904,15 @@ header{
       left: 0;
     }
 
+    &-group{
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
     @include mediaMin(lg){
       display: grid;
-      grid-template: repeat(2, min-content) / repeat(3, min-content);
+      grid-template: repeat(2, min-content) / repeat(2, min-content) auto;
       gap: 3rem;
 
       .userdata{
@@ -1563,6 +1924,14 @@ header{
         }
       }
 
+      &-group{
+        flex-direction: row;
+        gap: 0;
+        justify-content: space-between;
+        align-items: center;
+        grid-column: span 3;
+      }
+
     }
 
   }
@@ -1571,17 +1940,33 @@ header{
     display: flex;
     gap: 3rem;
     margin: 1.5rem 0 2rem 0;
+    position: relative;
 
     @include mediaMin(lg){
       margin: initial;
-      grid-column: 3;
+      grid-column: 2;
+      position: inherit;
     }
 
-    div{
+    div:not(.pocket-context-wrapper, .pocket-context-wrapper  *){
       display: flex;
       align-items: center;
       gap: .5rem;
     }
+  }
+
+  &-pocket{
+    @include mediaMin(md){
+      position: relative;
+    }
+
+    svg.--saved{
+      path{
+        fill: $color-primary;
+        stroke-width: 0;
+      }
+    }
+
   }
 
   &-preptime{
@@ -1625,6 +2010,76 @@ header{
 
     @include mediaMin(xl){
       margin-top: 3rem;
+    }
+  }
+
+  &-ingredient{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &-title{
+      font-weight: 500;
+    }
+
+    &-elements{
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    &-element{
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      position: relative;
+      cursor: pointer;
+
+      input{
+        visibility: hidden;
+
+        &:checked ~ span:after {
+          display: block;
+        }
+
+        &:checked ~ p {
+          text-decoration: line-through;
+          color: $color-text-75;
+        }
+
+      }
+
+      span{
+        position: absolute;
+        top: 5px;
+        left: 0;
+        height: 16px;
+        width: 16px;
+        border: 2px solid $color-text-75;
+        border-radius: 50%;
+
+        &:after {
+          position: absolute;
+          content: '';
+          background-image: url("/assets/images/check.png");
+          display: none;
+          top: -4px;
+          right: -5px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      &:hover input ~ span {
+        border: 2px solid $color-secondary;
+      }
+
+      input:checked ~ span {
+        border: 2px solid $color-text-15;
+      }
+
+      
+
     }
   }
 
@@ -1701,7 +2156,7 @@ header{
       }
     }
 
-    p, &-actions{
+    p:not(.error), &-actions{
       margin: 1rem 0 1.5rem calc(3.2rem + 1rem);
     }
 
@@ -1711,30 +2166,6 @@ header{
       }
     }
 
-    &-reply{
-      margin: 1.5rem 0 0 calc(3.2rem + 1rem);
-      background: #fff;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-      
-      textarea{
-        border: 0;
-        outline: 0;
-        font-size: 1.4rem;
-        width: 100%;
-        background: inherit;
-        height: auto;
-        resize: none;
-      }
-
-      &-actions{
-        display: flex;
-        gap: 1.5rem;
-      }
-
-    }
 
     p{
       font-size: 1.4rem;
@@ -1751,6 +2182,7 @@ header{
 
     &-action{
       gap: 1rem;
+      cursor: pointer;
 
       span{
         font-size: 1.3rem;
@@ -1765,6 +2197,68 @@ header{
       }
     }
 
+  }
+
+}
+
+
+.feedback{
+
+  
+  &-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    form{
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+
+  &-container{
+    background: #fff;
+    box-sizing: $shadow;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &._reply{
+      margin: 1.5rem 0 0 calc(3.2rem + 1rem);
+    }
+
+    @include mediaMin(xl){
+      padding: 2rem;
+    }
+
+    textarea{
+      font-size: 1.4rem;
+      width: 100%;
+      outline: 0;
+      border: 0;
+      height: auto;
+      resize: none;
+    }
+
+    input[type="submit"]{
+      align-self: flex-end;
+    }
+
+  }
+
+  &-rating{
+    display: flex;
+    gap: 1.5rem;
+    span{
+      font-weight: 500;
+    }
+  }
+
+  &-actions{
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
   }
 
 }

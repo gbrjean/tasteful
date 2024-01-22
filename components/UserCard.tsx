@@ -1,42 +1,57 @@
 "use client"
 
-import { Button } from "./Button"
+import Link from "next/link"
 
-const UserCard = () => {
-  const handleClick = () => {
+interface props {
+  id: string;
+  fullName: string;
+  image: string;
+  created_at: string;
+  recipes: string;
+  friends: string;
+  comments: string;
+}
 
-  }
+const UserCard = ({
+  id,
+  fullName,
+  image,
+  created_at,
+  recipes,
+  friends,
+  comments,
+}: props) => {
+
 
   return (
-    <div className="user-card">
+    <Link href={`/user/${id}`} className="user-card">
       <div className="user-card-header">
         <div className="userdata">
-          <img src="/assets/images/pfp.jpg" alt="" />
-          <span>Gabriela Stanescu</span>
+          <img src={image || "/assets/images/pfp.png"} alt="" />
+          <span>{fullName}</span>
         </div>
-        <Button onClick={handleClick} gap="narrow" type="outline" color="colorful" text="Add friend" />
       </div>
 
       <div className="user-card-data">
         <div>
           <span>Date joined</span>
-          <span>20.06.2023</span>
+          <span>{created_at}</span>
         </div>
         <div>
           <span>Recipes</span>
-          <span>47</span>
+          <span>{recipes}</span>
         </div>
         <div>
           <span>Friends</span>
-          <span>200</span>
+          <span>{friends}</span>
         </div>
         <div>
-          <span>Reviews</span>
-          <span>1084</span>
+          <span>Comments</span>
+          <span>{comments}</span>
         </div>
       </div>
 
-    </div>
+    </Link>
   )
 }
 

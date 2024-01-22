@@ -1,26 +1,28 @@
-"use client"
 
-import { Button } from '@components/Button'
 import ProfileContent from '@components/ProfileContent'
+import SignOut from '@components/SignOut'
 import UserHeader from '@components/UserHeader'
+import { fetchSessionProfile, getCurrentUser } from '@lib/actions/user.actions'
+import { redirect } from 'next/navigation'
 
 
-const Profile = () => {
+const Profile = async () => {
 
-  const handleSave = () => {
+  const session = await getCurrentUser()
 
-  }
+  if(!session?.user) redirect('auth/login')
+
+
+  const user = await fetchSessionProfile(session?.user.email!)
 
   return (
     <>
-    <div id="page-header">
-      <h1>Profile</h1>
-      <Button onClick={handleSave} gap="large" type="full" color="colorful" text="Save profile" />
-    </div>
+    
+    <UserHeader user={user.image} session={session.user.email!} isProfile />
 
-    <UserHeader isProfile />
+    <ProfileContent user={user} session={session.user.email!} isProfile />
 
-    <ProfileContent isProfile />
+    <SignOut />
 
     </>
   )

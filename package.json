@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "users:import": "ts-node --project tsconfig.seed.json ./lib/seeders/user.seed.ts",
+    "recipes:import": "ts-node --project tsconfig.seed.json ./lib/seeders/recipes.seed.ts",
+    "ratings:import": "ts-node --project tsconfig.seed.json ./lib/seeders/ratings.seed.ts",
+    "replies:import": "ts-node --project tsconfig.seed.json ./lib/seeders/replies.seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
@@ -16,6 +20,9 @@
     "@types/react-dom": "18.2.6",
     "@uploadthing/react": "^5.5.0",
     "bcryptjs": "^2.4.3",
+    "blob": "^0.1.0",
+    "form-data": "^4.0.0",
+    "fs-extra": "^11.1.1",
     "mongoose": "^7.5.0",
     "next": "13.4.7",
     "next-auth": "^4.23.1",
@@ -27,5 +34,9 @@
     "typescript": "5.1.3",
     "uploadthing": "^5.5.0",
     "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.2",
+    "dotenv": "^16.3.1"
   }
 }

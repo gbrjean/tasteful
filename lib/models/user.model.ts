@@ -7,7 +7,7 @@ const userSchema = new Schema({
   image: String,
   recipes: [
     { type: Schema.Types.ObjectId,
-       ref: 'Recipe'
+      ref: 'Recipe'
     }
   ],
   friends: [
@@ -16,13 +16,20 @@ const userSchema = new Schema({
     }
   ],
   pocket: {
-    pocket_name: String,
-    elements: [
-      { type: Schema.Types.ObjectId, 
-        ref: 'Recipe' 
+    type: [
+      {
+        pocket_name: String,
+        elements: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'Recipe'
+          }
+        ],
       }
     ],
+    default: [],
   },
+  reviews_no: { type: Number, default: 0 },
   created_at: { type: Date, default: Date.now },
 });
 

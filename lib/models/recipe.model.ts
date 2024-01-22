@@ -13,15 +13,17 @@ const recipeSchema = new Schema({
   photo: String,
   created_at: { type: Date, default: Date.now },
   prep_time: String,
-  comments_no: Number,
-  rating: Number,
+  comments_no: { type: Number, default: 0 },
+  rating: { type: Number, default: 0.0 },
+  ratingSum: { type: Number, default: 0 },
+  topLevelComments_no: { type: Number, default: 0 },
   ingredients: [
     {
       material: String,
       elements: [
         {
           ingredient: String,
-          quantity: Number,
+          quantity: String,
           unit: String,
         },
       ],
@@ -29,18 +31,7 @@ const recipeSchema = new Schema({
   ],
   instructions: [{ instruction: String }],
   comments: [
-    {
-      author: { type: Schema.Types.ObjectId, ref: 'User' },
-      created_at: { type: Date, default: Date.now },
-      comment: String,
-      replies: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-    },
-  ],
-  reviews: [
-    {
-      author: { type: Schema.Types.ObjectId, ref: 'User' },
-      stars: Number,
-    },
+    { type: Schema.Types.ObjectId, ref: 'Comment' }
   ],
 });
 

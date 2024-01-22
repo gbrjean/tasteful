@@ -1,13 +1,15 @@
 import Category from "@components/Category"
 import { ArrowIcon } from "@public/assets/icons/ArrowIcon"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormContext } from 'react-hook-form';
+import { categories } from "@constants/categories";
 
 type props = {
   className?: string;
+  defaultValue?: string;
 }
 
-const Dropdown = ({className} : props) => {
+const Dropdown = ({className, defaultValue} : props) => {
 
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState({image: '', name: ''})
@@ -17,9 +19,21 @@ const Dropdown = ({className} : props) => {
   const handleCategoryClick = (image: string, name: string) => {
     setOpen(false)
     setSelected({image, name})
-    register('photo', { value: image })
-    register('category', { value: name })
+    // register('photo', { value: image })
+    register('category', { value: name.toLowerCase() })
   }
+
+  useEffect(() => {
+    if(defaultValue){
+      let selectedCategory = categories.find((category) => category.name.toLowerCase() == defaultValue);
+      if(selectedCategory){
+        setSelected({image: selectedCategory.image, name: selectedCategory.name})
+      }
+      register('category', { value: defaultValue.toLowerCase() })
+    }
+  }, [defaultValue])
+  
+
 
   return (
     <div className={open ? `input-dropdown ${className} --active` : `input-dropdown ${className}`}>
@@ -35,9 +49,11 @@ const Dropdown = ({className} : props) => {
 
     { open && (
         <div className="input-dropdown-content">
-          <Category image="/assets/images/post.jpg" name="Seafood" onClick={() => handleCategoryClick("/assets/images/post.jpg", "Seafood")} />
-          <Category image="/assets/images/post.jpg" name="Less than 30 min" onClick={() => handleCategoryClick("/assets/images/post.jpg", "Less than 30 min")} />
-          <Category image="/assets/images/post.jpg" name="Less than 30 min" />
+
+          { categories.map((category) => (
+            <Category image={category.image} name={category.name} onClick={() => handleCategoryClick(category.image, category.name)} />
+          ))}
+
         </div>
     )}
 

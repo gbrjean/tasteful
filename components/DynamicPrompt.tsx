@@ -31,7 +31,6 @@ const IngredientInput = ({ materialIndex, ingredientIndex, onDeleteIngredient } 
     <div className="dynamic-prompt-ingredient">
       <span>Ingredient</span>
       <div className="dynamic-prompt-input">
-        {/* <input type="text" /> */}
 
         <Controller
           name={`materials[${materialIndex}].ingredients[${ingredientIndex}].name`}
@@ -61,11 +60,7 @@ const IngredientInput = ({ materialIndex, ingredientIndex, onDeleteIngredient } 
 
 
 const MaterialInput = ({ materialIndex, onDeleteMaterial } : MaterialInputProps ) => {
-  // const [ingredients, setIngredients] = useState<{}[]>(
-  //   [
-  //     {}
-  //   ]
-  // );
+
 
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -82,28 +77,14 @@ const MaterialInput = ({ materialIndex, onDeleteMaterial } : MaterialInputProps 
   };
 
   const handleDeleteIngredient = (materialIndex: number, ingredientIndex: number) => {
-    remove(ingredientIndex); // Remove the ingredient at the specified index
+    remove(ingredientIndex);
   };
 
-  // useEffect(() => {
-  //   handleAddIngredient()
-  // }, [])
-  
-
-  // const handleAddIngredient = () => {
-  //   setIngredients([...ingredients, {}]);
-  // };
-
-  // const handleDeleteIngredient = (ingredientIndex: number) => {
-  //   const newIngredients = ingredients.filter((_, index) => index !== ingredientIndex);
-  //   setIngredients(newIngredients);
-  // };
 
   return (
     <div className="dynamic-prompt-material">
       <span>Material</span>
       <div className="dynamic-prompt-input">
-        {/* <input type="text" /> */}
 
         <Controller
           name={`materials[${materialIndex}].name`}
@@ -129,22 +110,13 @@ const MaterialInput = ({ materialIndex, onDeleteMaterial } : MaterialInputProps 
 
         {fields.map((field, index) => (
           <IngredientInput
-            key={field.id as string} // Note: `id` is a string, so cast it
+            key={field.id as string}
             materialIndex={materialIndex}
             ingredientIndex={index}
             onDeleteIngredient={handleDeleteIngredient}
           />
         ))}
 
-
-        {/* {ingredients.map((_, index) => (
-          <IngredientInput
-            key={index}
-            materialIndex={material}
-            ingredientIndex={index}
-            onDeleteIngredient={handleDeleteIngredient}
-          />
-        ))} */}
         <Button onClick={handleAddIngredient} type='icon' 
           text={<> <AddCircleIcon /> <div>Add ingredient</div> </>} />
       </div>
@@ -153,46 +125,41 @@ const MaterialInput = ({ materialIndex, onDeleteMaterial } : MaterialInputProps 
 };
 
 
-const DynamicPrompt = () => {
+const DynamicPrompt = ({defaultValues} : {defaultValues?: []}) => {
 
-  // const [materials, setMaterials] = useState<{}[]>(
-  //   [
-  //     {}
-  //   ]
-  // );
-  
-
-  // const handleAddMaterial = () => {
-  //   setMaterials([...materials, {}]);
-  // };
-
-  // const handleDeleteMaterial = (materialIndex: number) => {
-  //   if (materials.length > 1) {
-  //     const newMaterials = materials.filter((_, index) => index !== materialIndex);
-  //     setMaterials(newMaterials);
-  //   }
-  // };
-
-
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "materials",
   });
 
   const handleAddMaterial = () => {
-    append({ name: "", ingredients: [{ name: "" }] }); // Add a material with an empty ingredient
+    append({ name: "", ingredients: [{ name: "" }] });
   };
 
   const handleDeleteMaterial = (materialIndex: number) => {
     if (fields.length > 1) {
-      remove(materialIndex); // Remove the material at the specified index
+      remove(materialIndex);
     }
   };
 
   useEffect(() => {
-    handleAddMaterial()
-  }, [])
+    handleAddMaterial();
+    if (defaultValues && defaultValues.length > 0) {
+      defaultValues.forEach((material: any, materialIndex) => {
+        setValue(`materials[${materialIndex}].name`, material.material);
+
+        if (material.elements && material.elements.length > 0) {
+          material.elements.forEach((element: any, ingredientIndex: number) => {
+            setValue(`materials[${materialIndex}].ingredients[${ingredientIndex}].name`, element.ingredient);
+            setValue(`materials[${materialIndex}].ingredients[${ingredientIndex}].quantity`, element.quantity.toString());
+          });
+        }
+      });
+    } else {
+      handleAddMaterial();
+    }
+  }, [defaultValues]);
 
 
   return (
@@ -202,17 +169,9 @@ const DynamicPrompt = () => {
         <MaterialInput key={field.id as string} materialIndex={index} onDeleteMaterial={handleDeleteMaterial}  />
       ))}
 
-      {/* { materials.map((_, index) => (
-          <MaterialInput
-            key={index}
-            material={index}
-            onDeleteMaterial={handleDeleteMaterial}
-          />
-      ))} */}
-
-      
       <Button onClick={handleAddMaterial} type='icon' 
-          text={<> <AddCircleIcon /> <div>Add material</div> </>} />
+          text={<> <AddCircleIcon /> <div>Add material</div> </>}
+       />
 
     </div>
   )

@@ -1,4 +1,3 @@
-
 type props = {
   gap?: 'narrow' | 'large';
   type: 'outline' | 'full' | 'icon';
