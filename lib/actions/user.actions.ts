@@ -266,12 +266,28 @@ export async function fetchSessionProfile(email: string){
       },
       {
         $addFields: {
+          recipesList: {
+            $map: {
+              input: '$recipesList',
+              as: 'recipe',
+              in: {
+                _id: { $toString: '$$recipe._id' },
+                title: '$$recipe.title',
+                slug: '$$recipe.slug',
+                rating: '$$recipe.rating',
+                photo: '$$recipe.photo',
+                comments_no: '$$recipe.comments_no',
+                created_at: '$$recipe.created_at',
+                prep_time: '$$recipe.prep_time',
+              },
+            },
+          },
           friendsList: {
             $map: {
               input: '$friendsList',
               as: 'friend',
               in: {
-                _id: '$$friend._id',
+                _id: { $toString: '$$friend._id' },
                 fullname: '$$friend.fullname',
                 image: '$$friend.image',
                 created_at: {
@@ -295,16 +311,7 @@ export async function fetchSessionProfile(email: string){
           fullname: 1,
           image: 1,
           friendsList: 1,
-          recipesList: {
-            _id: 1,
-            title: 1,
-            slug: 1,
-            rating: 1,
-            photo: 1,
-            comments_no: 1,
-            created_at: 1,
-            prep_time: 1,
-          },
+          recipesList: 1,
         },
       },
     ]);

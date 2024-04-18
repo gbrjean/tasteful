@@ -296,10 +296,11 @@ export async function deleteRecipeById(recipeId: string,
       throw new Error(`User not found`)
     }
 
-    const recipe = await Recipe.findOne({ _id: recipeId })
+    const recipe = await Recipe.findOne({ _id: new mongoose.Types.ObjectId(recipeId) })
     if(!recipe){
       throw new Error(`Recipe not found`)
     }
+
 
     user.recipes.pull(recipeId)
 
@@ -307,7 +308,7 @@ export async function deleteRecipeById(recipeId: string,
     const fileId: string | string[] = recipePhotoURL[recipePhotoURL.length - 1]
     await utapi.deleteFiles(fileId);
 
-    await Recipe.deleteOne(recipe)
+    await Recipe.deleteOne({ _id: new mongoose.Types.ObjectId(recipeId) })
     await user.save()
 
     revalidatePath(path)
